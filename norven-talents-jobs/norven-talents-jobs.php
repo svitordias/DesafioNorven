@@ -28,3 +28,5 @@ function norven_jobs_deactivate() {
     flush_rewrite_rules();
 }
 register_deactivation_hook(__FILE__, 'norven_jobs_deactivate');
+
+require_once __DIR__ . '/vendor/autoload.php';
