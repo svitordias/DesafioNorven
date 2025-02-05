@@ -1,28 +1,28 @@
 <?php
-if (!defined(constant_name: 'ABSPATH')) {
+if (!defined('ABSPATH')) {
     exit;
 }
 
 // Função para listar vagas no frontend
-function norven_shortcode(): string {
+function norven_shortcode() {
     $args = array(
         'post_type'      => 'jobs',
         'posts_per_page' => 10,
         'post_status'    => 'publish',
     );
 
-    $query = new WP_Query(query: $args);
+    $query = new WP_Query($args);
     $output = '<div class="norven-jobs-list">';
 
     if ($query->have_posts()) {
         while ($query->have_posts()) {
             $query->the_post();
-            $localizacao = get_post_meta(post_id: get_the_ID(), key: '_norven_jobs_localizacao', single: true);
-            $tipo = get_post_meta(post_id: get_the_ID(), key: '_norven_jobs_tipo', single: true);
+            $localizacao = get_post_meta(get_the_ID(), '_norven_jobs_localizacao', true);
+            $tipo = get_post_meta(get_the_ID(), '_norven_jobs_tipo', true);
             $output .= '<div class="norven-job">';
             $output .= '<h3>' . get_the_title() . '</h3>';
-            $output .= '<p><strong>Localização:</strong> ' . esc_html(text: $localizacao) . '</p>';
-            $output .= '<p><strong>Tipo:</strong> ' . esc_html(text: $tipo) . '</p>';
+            $output .= '<p><strong>Localização:</strong> ' . esc_html($localizacao) . '</p>';
+            $output .= '<p><strong>Tipo:</strong> ' . esc_html($tipo) . '</p>';
             $output .= '</div>';
         }
         wp_reset_postdata();
@@ -33,10 +33,10 @@ function norven_shortcode(): string {
     $output .= '</div>';
     return $output;
 }
-add_shortcode(' norven_jobs_list', 'norven_shortcode');
+add_shortcode('norven_jobs_list', 'norven_shortcode');
 
 // Função para criar formulário de contato
-function norven_jobs_filter_form(): bool|string {
+function norven_jobs_filter_form() {
     ob_start(); ?>
     <form id="job-filter-form">
         <select name="tipo_contratacao">
@@ -64,7 +64,7 @@ function norven_jobs_filter_form(): bool|string {
                 e.preventDefault();
                 $.ajax({
                     type: 'POST',
-                    url: '<?php echo admin_url(path: "admin-ajax.php"); ?>',
+                    url: '<?php echo admin_url("admin-ajax.php"); ?>',
                     data: $(this).serialize() + '&action=norven_jobs_filter',
                     success: function(response) {
                         $('#job-results').html(response);
@@ -75,38 +75,4 @@ function norven_jobs_filter_form(): bool|string {
     </script>
     <?php return ob_get_clean();
 }
-add_shortcode(tag: 'norven_jobs_filter', callback: 'norven_jobs_filter_form');
-
-// Design na listagem de vagas
-function norven_shortcode(): string {
-    $args = [
-        'post_type'      => 'jobs',
-        'posts_per_page' => 10,
-    ];
-
-    $query = new WP_Query(query: $args);
-    $output = '<div class="norven-job-list">';
-
-    if ($query->have_posts()) :
-        while ($query->have_posts()) : $query->the_post();
-            $localizacao = get_post_meta(post_id: get_the_ID(),key:'localizacao', single: true);
-            $tipo_contratacao = get_post_meta(post_id: get_the_ID(), key:'tipo_contratacao', single: true);
-
-            $output .= '<div class="norven-job-item">';
-            $output .= '<h3><a href="' . get_permalink() . '">' . get_the_title() . '</a></h3>';
-            $output .= '<p class="job-location">📍 ' . esc_html(text: $localizacao) . '</p>';
-            $output .= '<p><strong>Tipo:</strong> ' . esc_html(text: $tipo_contratacao) . '</p>';
-            $output .= '<p>' . get_the_excerpt() . '</p>';
-            $output .= '</div>';
-        endwhile;
-        wp_reset_postdata();
-    else :
-        $output .= '<p>Nenhuma vaga encontrada.</p>';
-    endif;
-
-    $output .= '</div>';
-    return $output;
-
-} 
-
- add_shortcode(tag: 'norven_jobs', callback: 'norven_shortcode')
+add_shortcode('norven_jobs_filter', 'norven_jobs_filter_form');

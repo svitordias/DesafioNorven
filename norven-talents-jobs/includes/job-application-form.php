@@ -1,9 +1,9 @@
 <?php
-if (!defined(constant_name: 'ABSPATH')) {
+if (!defined('ABSPATH')) {
     exit;
 }
 
-function norven_jobs_application_form():bool {
+function norven_jobs_application_form() {
     ob_start(); ?>
     <form id="job-application-form" enctype="multipart/form-data">
         <input type="text" name="nome" placeholder="Seu Nome" required>
@@ -24,7 +24,7 @@ function norven_jobs_application_form():bool {
 
                 $.ajax({
                     type: 'POST',
-                    url: '<?php echo admin_url(path: "admin-ajax.php"); ?>',
+                    url: '<?php echo admin_url("admin-ajax.php"); ?>',
                     data: formData,
                     processData: false,
                     contentType: false,
@@ -38,4 +38,4 @@ function norven_jobs_application_form():bool {
     <?php return ob_get_clean(); 
 }
 
-add_shortcode(tag: 'norven_job_application', callback: 'norven_jobs_application_form');
+add_shortcode('norven_job_application', 'norven_jobs_application_form');

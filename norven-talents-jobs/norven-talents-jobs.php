@@ -7,28 +7,28 @@
  * License: MIT
  */
 
-if (!defined(constant_name: 'ABSPATH')) {
+if (!defined('ABSPATH')) {
     exit; // Impede acesso direto ao arquivo
 }
 
 // Inclui os arquivos necessários
-require_once plugin_dir_path( __FILE__ ), .'includes/cpt-jobs.php';
-require_once plugin_dir_path( __FILE__ ) .'includes/meta-boxes.php';
-require_once plugin_dir_path( __FILE__ ) .'includes/job-application-form.php';
-require_once plugin_dir_path( __FILE__ ) .'includes/shortcode-jobs.php';
+require_once plugin_dir_path(__FILE__) . 'includes/cpt-jobs.php';
+require_once plugin_dir_path(__FILE__) . 'includes/meta-boxes.php';
+require_once plugin_dir_path(__FILE__) . 'includes/job-application-form.php';
+require_once plugin_dir_path(__FILE__) . 'includes/shortcode-jobs.php';
 
 // Função de ativação
 function norven_jobs_activate(): void {
     norven_jobs_register_cpt();
     flush_rewrite_rules();
 }
-register_activation_hook(file: __FILE__, callback: 'norven_jobs_activate');
+register_activation_hook(__FILE__, 'norven_jobs_activate');
 
 // Função de desativação
 function norven_jobs_deactivate(): void {
     flush_rewrite_rules();
 }
-register_deactivation_hook(file: __FILE__, callback: 'norven_jobs_deactivate');
+register_deactivation_hook(__FILE__, 'norven_jobs_deactivate');
 
 require_once __DIR__ . '/vendor/autoload.php';
 
