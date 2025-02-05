@@ -1,0 +1,32 @@
+/* Estiliza os campos personalizados */
+.norven-job-meta-box label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.norven-job-meta-box input,
+.norven-job-meta-box textarea,
+.norven-job-meta-box select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+/* Botão estilizado */
+.norven-job-meta-box button {
+    background-color: #0073aa;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.norven-job-meta-box button:hover {
+    background-color: #005177;
+}
