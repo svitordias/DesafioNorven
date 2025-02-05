@@ -1,14 +1,22 @@
 # DesafioNorven
  Desafio PHP/WordPress para vaga de Desenvolvedor Jr
 
-A seguir, como instalar o plugin no WordPress.<br>
-	<br>1.	Preparação dos Arquivos do Plugin:<br>
-	• Baixe ou clone a pasta do plugin (incluindo os arquivos principais, pastas de “includes” e “assets”) para o seu computador.<br>
-	<br>2.	Upload dos Arquivos:<br>
-	• Usando um cliente FTP ou o Gerenciador de Arquivos do seu serviço de hospedagem, copie a pasta do plugin para o diretório /wp-content/plugins/ do seu site WordPress.<br>
-	<br>3.	Ativação do Plugin:<br>
-	• Acesse o painel administrativo do WordPress, vá até Plugins > Plugins Instalados, localize o “Norven Talents Jobs” e clique em Ativar.<br>
-	<br>4.	Configuração e Testes:<br>
-	• Após a ativação, crie novas vagas através do menu “Vagas” no painel.<br>
-	• Utilize o shortcode [norven_jobs] para exibir a lista de vagas em uma página do seu site.<br>
-	• Ajuste as configurações e personalize o design conforme necessário.
+## Descrição do Plugin
+O plugin Norven Talents Jobs permite que você crie e gerencie vagas de emprego no seu site WordPress de forma fácil e intuitiva.  
+### Principais recursos:<br>
+•⁠  ⁠Criação de um Custom Post Type para vagas.<br>
+•⁠  ⁠Campos personalizados para local, tipo de contratação, salário, entre outros.<br>
+•⁠  ⁠Shortcode para exibição das vagas no frontend.<br>
+•⁠  ⁠Opções de filtro e integração com formulários de candidatura.<br>
+
+## Instalação
+1.⁠ ⁠Faça o download do plugin e descompacte a pasta "norven-talents-jobs".<br>
+2.⁠ ⁠Envie a pasta para o diretório ⁠ /wp-content/plugins/ ⁠ do seu site WordPress.<br>
+3.⁠ ⁠No painel administrativo, vá em *Plugins* e ative o "Norven Talents Jobs".<br>
+4.⁠ ⁠Configure as opções do plugin, se necessário, e comece a cadastrar suas vagas.<br>
+
+### Cadastrar nova vaga
+Após ativar o plugin, vá ao menu "Vagas" no painel administrativo e clique em "Adicionar Nova". Preencha os campos personalizados e publique a vaga.
+
+### Exibir as vagas no site
+Utilize o shortcode ⁠ [norven_jobs] ⁠ em uma página ou post para exibir a lista de vagas.
