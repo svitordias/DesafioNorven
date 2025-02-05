@@ -109,4 +109,4 @@ function norven_shortcode(): string {
 
 } 
 
-add_shortcode(tag: 'norven_jobs', callback: 'norven_shortcode')
+ add_shortcode(tag: 'norven_jobs', callback: 'norven_shortcode')

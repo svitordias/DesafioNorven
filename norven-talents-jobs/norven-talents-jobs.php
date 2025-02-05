@@ -12,10 +12,10 @@ if (!defined(constant_name: 'ABSPATH')) {
 }
 
 // Inclui os arquivos necessários
-require_once plugin_dir_path(file: __FILE__); . 'includes/cpt-jobs.php';
-require_once plugin_dir_path(file: __FILE__) . 'includes/meta-boxes.php';
-require_once plugin_dir_path(file: __FILE__) . 'includes/shortcode-jobs.php';
-require_once plugin_dir_path(file: __FILE__) . 'includes/job-application-form.php';
+require_once plugin_dir_path( __FILE__ ), .'includes/cpt-jobs.php';
+require_once plugin_dir_path( __FILE__ ) .'includes/meta-boxes.php';
+require_once plugin_dir_path( __FILE__ ) .'includes/job-application-form.php';
+require_once plugin_dir_path( __FILE__ ) .'includes/shortcode-jobs.php';
 
 // Função de ativação
 function norven_jobs_activate(): void {
@@ -113,4 +113,4 @@ add_action(hook_name: 'admin_enqueue_scripts', callback: 'norven_jobs_admin_styl
 function norven_jobs_frontend_styles(): void {
     wp_enqueue_style(handle: 'norven-jobs-public-style', src: plugin_dir_url(file: __FILE__) . 'assets/css/public-style.css');
 }
-add_action(hook_name: 'wp_enqueue_scripts', callback: 'norven_jobs_frontend_styles');
+add_action(hook_name: 'wp_enqueue_scripts', callback: 'norven_jobs_frontend_styles') ;

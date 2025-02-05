@@ -29,6 +29,6 @@ function norven_jobs_register_cpt() {
         'rewrite'            => array('slug' => 'vagas'),
     );
 
-    register_post_type('jobs', $args);
+    register_post_type(post_type: 'jobs', args: $args);
 }
-add_action('init', 'norven_jobs_register_cpt');
+add_action(hook_name: 'init', callback: 'norven_jobs_register_cpt');
