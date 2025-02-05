@@ -11,7 +11,7 @@ function norven_shortcode() {
         'post_status'    => 'publish',
     );
 
-    $query = new WP_Query($args);
+    $query = new WP_Query(query: $args);
     $output = '<div class="norven-jobs-list">';
 
     if ($query->have_posts()) {

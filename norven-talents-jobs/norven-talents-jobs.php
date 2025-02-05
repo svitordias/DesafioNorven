@@ -18,22 +18,20 @@ require_once plugin_dir_path(__FILE__) . 'includes/job-application-form.php';
 require_once plugin_dir_path(__FILE__) . 'includes/shortcode-jobs.php';
 
 // Função de ativação
-function norven_jobs_activate(): void {
+function norven_jobs_activate() {
     norven_jobs_register_cpt();
     flush_rewrite_rules();
 }
 register_activation_hook(__FILE__, 'norven_jobs_activate');
 
 // Função de desativação
-function norven_jobs_deactivate(): void {
+function norven_jobs_deactivate() {
     flush_rewrite_rules();
 }
 register_deactivation_hook(__FILE__, 'norven_jobs_deactivate');
 
-require_once __DIR__ . '/vendor/autoload.php';
-
 // Função de filtrar as vagas
-function norven_jobs_filter(): void {
+function norven_jobs_filter() {
     $tipo_contratacao = $_POST['tipo_contratacao'];
     $localizacao = $_POST['localizacao'];
 
@@ -59,14 +57,14 @@ function norven_jobs_filter(): void {
         ];
     }
 
-    $query = new WP_Query(query: $args);
+    $query = new WP_Query($args);
 
     if ($query->have_posts()) :
         while ($query->have_posts()) : $query->the_post(); ?>
             <div class="norven-job-item">
                 <h3><?php the_title(); ?></h3>
-                <p>📍 <?php echo get_post_meta(post_id: get_the_ID(), key: 'localizacao', single: true); ?></p>
-                <p><strong>Tipo:</strong> <?php echo get_post_meta(post_id: get_the_ID(), key: 'tipo_contratacao', single: true); ?></p>
+                <p>📍 <?php echo get_post_meta(get_the_ID(), 'localizacao', true); ?></p>
+                <p><strong>Tipo:</strong> <?php echo get_post_meta(get_the_ID(), 'tipo_contratacao', true); ?></p>
             </div>
         <?php endwhile;
     else :
@@ -75,42 +73,42 @@ function norven_jobs_filter(): void {
     wp_die();
 }
 
-add_action(hook_name: 'wp_ajax_norven_jobs_filter', callback: 'norven_jobs_filter');
-add_action(hook_name: 'wp_ajax_nopriv_norven_jobs_filter', callback: 'norven_jobs_filter');
+add_action('wp_ajax_norven_jobs_filter', 'norven_jobs_filter');
+add_action('wp_ajax_nopriv_norven_jobs_filter', 'norven_jobs_filter');
 
-// Função de formulario
-function norven_submit_application(): void {
+// Função de envio de candidatura
+function norven_submit_application() {
     $vaga_id = $_POST['vaga_id'];
-    $nome = sanitize_text_field(str: $_POST['nome']);
-    $email = sanitize_email(email: $_POST['email']);
+    $nome = sanitize_text_field($_POST['nome']);
+    $email = sanitize_email($_POST['email']);
 
     if (!empty($_FILES['curriculo']['name'])) {
-        $uploaded_file = wp_upload_bits(name: $_FILES['curriculo']['name'], deprecated: null, bits: file_get_contents(filename: $_FILES['curriculo']['tmp_name']));
+        $uploaded_file = wp_upload_bits($_FILES['curriculo']['name'], null, file_get_contents($_FILES['curriculo']['tmp_name']));
         if (!empty($uploaded_file['error'])) {
             echo '<p style="color: red;">Erro ao fazer upload do currículo.</p>';
             wp_die();
         }
     }
 
-    $mensagem = "Nova candidatura para a vaga " . get_the_title(post: $vaga_id) . "\n\nNome: $nome\nE-mail: $email\n\nCurrículo: " . $uploaded_file['url'];
+    $mensagem = "Nova candidatura para a vaga " . get_the_title($vaga_id) . "\n\nNome: $nome\nE-mail: $email\n\nCurrículo: " . $uploaded_file['url'];
 
-    wp_mail(to: get_option(option: 'admin_email'), subject: 'Nova Candidatura Recebida', message: $mensagem);
+    wp_mail(get_option('admin_email'), 'Nova Candidatura Recebida', $mensagem);
 
     echo '<p style="color: green;">Candidatura enviada com sucesso!</p>';
     wp_die();
 }
 
-add_action(hook_name: 'wp_ajax_norven_submit_application', callback: 'norven_submit_application');
-add_action(hook_name: 'wp_ajax_nopriv_norven_submit_application', callback: 'norven_submit_application');
+add_action('wp_ajax_norven_submit_application', 'norven_submit_application');
+add_action('wp_ajax_nopriv_norven_submit_application', 'norven_submit_application');
 
-// Style admin
-function norven_jobs_admin_styles(): void {
-    wp_enqueue_style(handle: 'norven-jobs-admin-style', src: plugin_dir_url(file: __FILE__) . 'assets/css/admin-style.css');
+// Estilos do admin
+function norven_jobs_admin_styles() {
+    wp_enqueue_style('norven-jobs-admin-style', plugin_dir_url(__FILE__) . 'assets/css/admin-style.css');
 }
-add_action(hook_name: 'admin_enqueue_scripts', callback: 'norven_jobs_admin_styles');
+add_action('admin_enqueue_scripts', 'norven_jobs_admin_styles');
 
-// Style public
-function norven_jobs_frontend_styles(): void {
-    wp_enqueue_style(handle: 'norven-jobs-public-style', src: plugin_dir_url(file: __FILE__) . 'assets/css/public-style.css');
+// Estilos do frontend
+function norven_jobs_frontend_styles() {
+    wp_enqueue_style('norven-jobs-public-style', plugin_dir_url(__FILE__) . 'assets/css/public-style.css');
 }
-add_action(hook_name: 'wp_enqueue_scripts', callback: 'norven_jobs_frontend_styles') ;
+add_action('wp_enqueue_scripts', 'norven_jobs_frontend_styles');
