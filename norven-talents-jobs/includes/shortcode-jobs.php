@@ -108,5 +108,3 @@ function norven_shortcode(): string {
     return $output;
     add_shortcode(tag: 'norven_jobs', callback: 'norven_shortcode')
 } 
-
-
