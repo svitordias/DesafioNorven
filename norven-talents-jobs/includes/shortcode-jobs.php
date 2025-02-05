@@ -106,5 +106,7 @@ function norven_shortcode(): string {
 
     $output .= '</div>';
     return $output;
-    add_shortcode(tag: 'norven_jobs', callback: 'norven_shortcode')
+
 } 
+
+add_shortcode(tag: 'norven_jobs', callback: 'norven_shortcode')
