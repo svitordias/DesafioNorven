@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Norven Talents Jobs Versão Final
  * Description: Plugin para cadastro e exibição de vagas de emprego.
- * Version: 1.3
+ * Version: 1.4
  * Author: Vitor Dias
  */
 
