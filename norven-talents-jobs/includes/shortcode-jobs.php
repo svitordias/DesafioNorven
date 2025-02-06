@@ -3,7 +3,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-// Função para listar vagas no frontend
+// Função para listar vagas no frontend com filtro
 function norven_shortcode() {
     $args = array(
         'post_type'      => 'jobs',
@@ -11,7 +11,18 @@ function norven_shortcode() {
         'post_status'    => 'publish',
     );
 
-    $query = new WP_Query(query: $args);
+    // Verifica se há um filtro aplicado
+    if (isset($_GET['tipo_contratacao']) && !empty($_GET['tipo_contratacao'])) {
+        $args['meta_query'] = array(
+            array(
+                'key'     => '_norven_jobs_tipo',
+                'value'   => sanitize_text_field($_GET['tipo_contratacao']),
+                'compare' => '='
+            )
+        );
+    }
+
+    $query = new WP_Query($args);
     $output = '<div class="norven-jobs-list">';
 
     if ($query->have_posts()) {
@@ -35,44 +46,19 @@ function norven_shortcode() {
 }
 add_shortcode('norven_jobs_list', 'norven_shortcode');
 
-// Função para criar formulário de contato
+// Função para criar formulário de filtro
 function norven_jobs_filter_form() {
     ob_start(); ?>
-    <form id="job-filter-form">
+    <form id="job-filter-form" method="GET">
         <select name="tipo_contratacao">
             <option value="">Tipo de Contratação</option>
-            <option value="Remoto">Remoto</option>
             <option value="Presencial">Presencial</option>
-            <option value="Híbrido">Híbrido</option>
+            <option value="Remoto">Remoto</option>
         </select>
-
-        <select name="localizacao">
-            <option value="">Localização</option>
-            <option value="São Paulo">São Paulo</option>
-            <option value="Rio de Janeiro">Rio de Janeiro</option>
-            <option value="Curitiba">Curitiba</option>
-        </select>
-
         <button type="submit">Filtrar</button>
     </form>
-
     <div id="job-results"></div>
-
-    <script>
-        jQuery(document).ready(function($) {
-            $('#job-filter-form').on('submit', function(e) {
-                e.preventDefault();
-                $.ajax({
-                    type: 'POST',
-                    url: '<?php echo admin_url("admin-ajax.php"); ?>',
-                    data: $(this).serialize() + '&action=norven_jobs_filter',
-                    success: function(response) {
-                        $('#job-results').html(response);
-                    }
-                });
-            });
-        });
-    </script>
     <?php return ob_get_clean();
 }
 add_shortcode('norven_jobs_filter', 'norven_jobs_filter_form');
+?>
