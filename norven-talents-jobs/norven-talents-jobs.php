@@ -1,114 +1,94 @@
 <?php
 /**
- * Plugin Name: Norven Cadastro de vagas
- * Description: Plugin para cadastro e exibição de vagas de emprego.
+ * Plugin Name: Norven Talents Jobs
+ * Description: Plugin para cadastro de vagas de emprego.
  * Version: 1.0
- * Author: Vitor Dias 
- * License: MIT
+ * Author: Vitor Dias
  */
 
-if (!defined('ABSPATH')) {
-    exit; // Impede acesso direto ao arquivo
+// Evita acesso direto ao arquivo
+if ( ! defined( 'ABSPATH' ) ) {
+    exit; // Sair se acessado diretamente
 }
 
-// Inclui os arquivos necessários
-require_once plugin_dir_path(__FILE__) . 'includes/cpt-jobs.php';
-require_once plugin_dir_path(__FILE__) . 'includes/meta-boxes.php';
-require_once plugin_dir_path(__FILE__) . 'includes/job-application-form.php';
-require_once plugin_dir_path(__FILE__) . 'includes/shortcode-jobs.php';
+// Função para registrar o Custom Post Type
+function ntj_register_job_post_type() {
+    $labels = array(
+        'name'               => 'Vagas',
+        'singular_name'      => 'Vaga',
+        'menu_name'          => 'Vagas',
+        'name_admin_bar'     => 'Vaga',
+        'add_new'            => 'Adicionar Nova',
+        'add_new_item'       => 'Adicionar Nova Vaga',
+        'new_item'           => 'Nova Vaga',
+        'edit_item'          => 'Editar Vaga',
+        'view_item'          => 'Ver Vaga',
+        'all_items'          => 'Todas as Vagas',
+        'search_items'       => 'Buscar Vagas',
+        'not_found'          => 'Nenhuma vaga encontrada.',
+        'not_found_in_trash' => 'Nenhuma vaga encontrada na lixeira.'
+    );
 
-// Função de ativação
-function norven_jobs_activate() {
-    norven_jobs_register_cpt();
-    flush_rewrite_rules();
+    $args = array(
+        'labels'             => $labels,
+        'public'             => true,
+        'publicly_queryable' => true,
+        'show_ui'            => true,
+        'show_in_menu'       => true,
+        'query_var'          => true,
+        'rewrite'            => array( 'slug' => 'vaga' ),
+        'capability_type'    => 'post',
+        'has_archive'        => true,
+        'hierarchical'       => false,
+        'menu_position'      => null,
+        'supports'           => array( 'title', 'editor' ),
+        'register_meta_box_cb' => 'ntj_add_custom_fields'
+    );
+
+    register_post_type( 'vaga', $args );
 }
-register_activation_hook(__FILE__, 'norven_jobs_activate');
+add_action( 'init', 'ntj_register_job_post_type' );
 
-// Função de desativação
-function norven_jobs_deactivate() {
-    flush_rewrite_rules();
-}
-register_deactivation_hook(__FILE__, 'norven_jobs_deactivate');
-
-// Função de filtrar as vagas
-function norven_jobs_filter() {
-    $tipo_contratacao = $_POST['tipo_contratacao'];
-    $localizacao = $_POST['localizacao'];
-
-    $args = [
-        'post_type'      => 'jobs',
-        'posts_per_page' => 10,
-        'meta_query'     => [],
-    ];
-
-    if (!empty($tipo_contratacao)) {
-        $args['meta_query'][] = [
-            'key'     => 'tipo_contratacao',
-            'value'   => $tipo_contratacao,
-            'compare' => '='
-        ];
-    }
-
-    if (!empty($localizacao)) {
-        $args['meta_query'][] = [
-            'key'     => 'localizacao',
-            'value'   => $localizacao,
-            'compare' => '='
-        ];
-    }
-
-    $query = new WP_Query($args);
-
-    if ($query->have_posts()) :
-        while ($query->have_posts()) : $query->the_post(); ?>
-            <div class="norven-job-item">
-                <h3><?php the_title(); ?></h3>
-                <p>📍 <?php echo get_post_meta(get_the_ID(), 'localizacao', true); ?></p>
-                <p><strong>Tipo:</strong> <?php echo get_post_meta(get_the_ID(), 'tipo_contratacao', true); ?></p>
-            </div>
-        <?php endwhile;
-    else :
-        echo '<p>Nenhuma vaga encontrada.</p>';
-    endif;
-    wp_die();
+// Função para adicionar campos personalizados
+function ntj_add_custom_fields() {
+    add_meta_box(
+        'ntj_job_details',
+        'Detalhes da Vaga',
+        'ntj_render_job_details',
+        'vaga',
+        'normal',
+        'high'
+    );
 }
 
-add_action('wp_ajax_norven_jobs_filter', 'norven_jobs_filter');
-add_action('wp_ajax_nopriv_norven_jobs_filter', 'norven_jobs_filter');
-
-// Função de envio de candidatura
-function norven_submit_application() {
-    $vaga_id = $_POST['vaga_id'];
-    $nome = sanitize_text_field($_POST['nome']);
-    $email = sanitize_email($_POST['email']);
-
-    if (!empty($_FILES['curriculo']['name'])) {
-        $uploaded_file = wp_upload_bits($_FILES['curriculo']['name'], null, file_get_contents($_FILES['curriculo']['tmp_name']));
-        if (!empty($uploaded_file['error'])) {
-            echo '<p style="color: red;">Erro ao fazer upload do currículo.</p>';
-            wp_die();
-        }
-    }
-
-    $mensagem = "Nova candidatura para a vaga " . get_the_title($vaga_id) . "\n\nNome: $nome\nE-mail: $email\n\nCurrículo: " . $uploaded_file['url'];
-
-    wp_mail(get_option('admin_email'), 'Nova Candidatura Recebida', $mensagem);
-
-    echo '<p style="color: green;">Candidatura enviada com sucesso!</p>';
-    wp_die();
+function ntj_render_job_details( $post ) {
+    // Adicione campos personalizados aqui
+    // Exemplo: Título da Vaga, Descrição, Requisitos, Localização, Tipo de Contratação, Salário
+    // Utilize a função get_post_meta() para recuperar os valores
 }
 
-add_action('wp_ajax_norven_submit_application', 'norven_submit_application');
-add_action('wp_ajax_nopriv_norven_submit_application', 'norven_submit_application');
-
-// Estilos do admin
-function norven_jobs_admin_styles() {
-    wp_enqueue_style('norven-jobs-admin-style', plugin_dir_url(__FILE__) . 'assets/css/admin-style.css');
+// Shortcode para exibir as vagas
+function ntj_job_shortcode() {
+    // Lógica para exibir as vagas cadastradas
 }
-add_action('admin_enqueue_scripts', 'norven_jobs_admin_styles');
+add_shortcode( 'norven_jobs', 'ntj_job_shortcode' );
 
-// Estilos do frontend
-function norven_jobs_frontend_styles() {
-    wp_enqueue_style('norven-jobs-public-style', plugin_dir_url(__FILE__) . 'assets/css/public-style.css');
+// Endpoint REST API
+add_action( 'rest_api_init', function () {
+    register_rest_route( 'ntj/v1', '/jobs', array(
+        'methods' => 'GET',
+        'callback' => 'ntj_get_jobs',
+    ));
+});
+
+function ntj_get_jobs() {
+    // Lógica para retornar as vagas em formato JSON
 }
-add_action('wp_enqueue_scripts', 'norven_jobs_frontend_styles');
+
+// Enfileirar scripts e estilos
+function ntj_enqueue_scripts() {
+    wp_enqueue_style( 'ntj-style', plugins_url( 'assets/css/public-style.css', __FILE__ ) );
+    wp_enqueue_script( 'ntj-script', plugins_url( 'assets/js/public-script.js', __FILE__ ), array('jquery'), null, true );
+}
+add_action( 'wp_enqueue_scripts', 'ntj_enqueue_scripts' );
+?>
