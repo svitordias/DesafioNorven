@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name: Norven Talents Jobs
+ * Plugin Name: Norven Talents Jobs Versão 3
  * Description: Plugin para cadastro de vagas de emprego.
- * Version: 1.0
- * Author: Seu Nome
+ * Version: 1.2
+ * Author: Vitor Dias
  */
 
 // Evita acesso direto ao arquivo
