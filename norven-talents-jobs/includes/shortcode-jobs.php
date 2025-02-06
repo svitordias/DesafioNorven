@@ -1,6 +1,6 @@
 <?php
 if (!defined('ABSPATH')) {
-    exit;
+    exit; // Impede acesso direto ao arquivo
 }
 
 // Função para listar vagas no frontend com filtro
