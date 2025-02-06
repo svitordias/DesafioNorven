@@ -1,22 +1,39 @@
-# DesafioNorven
- Desafio PHP/WordPress para vaga de Desenvolvedor Jr
+# Norven Talents Jobs
 
-## Descrição do Plugin
-O plugin Norven Talents Jobs permite que você crie e gerencie vagas de emprego no seu site WordPress de forma fácil e intuitiva.  
-### Principais recursos:<br>
-•⁠  ⁠Criação de um Custom Post Type para vagas.<br>
-•⁠  ⁠Campos personalizados para local, tipo de contratação, salário, entre outros.<br>
-•⁠  ⁠Shortcode para exibição das vagas no frontend.<br>
-•⁠  ⁠Opções de filtro e integração com formulários de candidatura.<br>
+## Descrição
+O plugin Norven Talents Jobs permite que você crie e gerencie vagas de emprego no seu site WordPress.
 
-## Instalação
-1.⁠ ⁠Faça o download do plugin e descompacte a pasta "norven-talents-jobs".<br>
-2.⁠ ⁠Envie a pasta para o diretório ⁠ /wp-content/plugins/ ⁠ do seu site WordPress.<br>
-3.⁠ ⁠No painel administrativo, vá em *Plugins* e ative o "Norven Talents Jobs".<br>
-4.⁠ ⁠Configure as opções do plugin, se necessário, e comece a cadastrar suas vagas.<br>
+## Como Usar
 
-### Cadastrar nova vaga
-Após ativar o plugin, vá ao menu "Vagas" no painel administrativo e clique em "Adicionar Nova". Preencha os campos personalizados e publique a vaga.
+### 1. Ativar o Plugin
+- Acesse o painel do WordPress.
+- Vá para "Plugins" e localize "Norven Talents Jobs".
+- Clique em "Ativar".
 
-### Exibir as vagas no site
-Utilize o shortcode ⁠ [norven_jobs] ⁠ em uma página ou post para exibir a lista de vagas.
+### 2. Acessar a Página de Gerenciamento
+- Após ativar o plugin, você verá um novo item de menu chamado "Vagas" no painel do WordPress.
+- Clique em "Vagas" para acessar a página de gerenciamento de vagas.
+
+### 3. Gerenciar Vagas
+- Na página de gerenciamento, você poderá ver uma lista de vagas cadastradas.
+- Você pode adicionar novas vagas, editar ou excluir vagas existentes.
+
+### 4. Usar Shortcodes
+- Para exibir a lista de vagas em uma página ou post, use o shortcode `[norven_jobs_list]`.
+- Para exibir o formulário de candidatura, use o shortcode `[norven_job_application]`.
+
+### 5. Filtrar Vagas
+- Você pode usar o shortcode `[norven_jobs_filter]` para adicionar um formulário de filtro que permite aos usuários selecionar o tipo de contratação (Presencial/Remoto).
+
+### Exemplo de Uso de Shortcodes
+- Crie uma nova página ou post no WordPress.
+- Adicione os seguintes shortcodes onde desejar que as informações apareçam:
+  ```plaintext
+  [norven_jobs_filter]
+  [norven_jobs_list]
+  [norven_job_application]
+  ```
+
+## Considerações Finais
+- Certifique-se de que o plugin está ativado e que você tem as permissões necessárias para gerenciar as vagas.
+- Teste as funcionalidades para garantir que tudo esteja funcionando conforme o esperado.
